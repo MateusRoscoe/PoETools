@@ -1,5 +1,5 @@
 {
-  "name": "autoupdatefilterblade",
+  "name": "PoETools",
   "version": "1.0.0",
   "description": "Auto update your synced filter on filterblade.xyz with Path of Exile",
   "main": "app.js",
