@@ -1,0 +1,11 @@
+{
+  "name": "autoupdatefilterblade",
+  "version": "1.0.0",
+  "description": "Auto update your synced filter on filterblade.xyz with Path of Exile",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mateus Roscoe",
+  "license": "ISC"
+}
