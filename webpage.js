@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer')
 class Webpage {
     static async updateFilter() {
         var url = 'https://www.filterblade.xyz'
-        var hasLogin = false // toDO implement a method to detect if login data is present or not.
 
         var saveSlotFB = '1' // valid numbers are 0~14
         var saveSlotPoE = '2' // valid numbers are 0~14?
