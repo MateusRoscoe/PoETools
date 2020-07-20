@@ -1,5 +1,9 @@
 # Session Data
 /user_data
+/backup
+
+# vscode files
+.vscode/
 # Logs
 logs
 *.log

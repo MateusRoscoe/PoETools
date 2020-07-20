@@ -39,3 +39,5 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+webpage.updateFilter()
