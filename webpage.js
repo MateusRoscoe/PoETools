@@ -15,7 +15,8 @@ class Webpage {
         await page.goto(url)
         try {
                 // Waiting for page to load properly
-                await page.waitForSelector('button[id="SelectionButton5"]')
+            await page.waitForSelector('button[id="SelectionButton5"]')
+            await new Promise(r => setTimeout(r, 2000))
                 // Checking if is logged in
                 await page.waitForSelector('div[id=loginSessionInfo]', {
                     visible: true,
