@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-  </body>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <label for="saveSlotFB">Position to load in Filterblade.xyz</label><br>
+  <input type="number" id="saveSlotFB" name="saveSlotFB" min="1" max="15" value="2"></input><br>
+  <label for="saveSlotPoE">Position you want to sync to in Path of Exile Filter List:</label><br>
+  <input type="number" id="saveSlotPoE" name="saveSlotPoE" min="1" max="15" value="3"></input>
+ 
+  <button type="button" name="updateFilter" id="btnUpdateFilter" label="Update Filter">Update Filter</button>
+  <p id="lastUpdated">Last updated on : </p>
+  <script>
+    require('./renderer.js')
+  </script>
+</body>  
 </html>
