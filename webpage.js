@@ -1,3 +1,4 @@
+
 const puppeteer = require('puppeteer');
 const main = require ('./main.js')
 const filterblade = 'https://www.filterblade.xyz'
@@ -33,7 +34,6 @@ class Webpage {
             // Waiting for filter to load and possibly update
             await page.waitForSelector('div.smallMessageBox')
             console.log('Save state successfully loaded.')
-            
             // Syncing with PoE
             await page.click('a[href = "#"]')
             await page.click('button[id="uploadFilterToPoeButton"]')
