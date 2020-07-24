@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer')
+const filterblade = 'https://www.filterblade.xyz'
 class Webpage {
     static async updateFilter(slotFB, slotPoE) {
-        var url = 'https://www.filterblade.xyz'
         
         var saveSlotFB = slotFB - 1 // valid numbers are 0~14
         var saveSlotPoE = slotPoE - 1 // valid numbers are 0~14?
@@ -12,7 +12,7 @@ class Webpage {
             userDataDir: './user_data'
         });
         const page = await browser.newPage()
-        await page.goto(url)
+        await page.goto(filterblade)
         try {
             // Waiting for page to load properly
             await page.waitForSelector('button[id="SelectionButton5"]')
@@ -50,17 +50,24 @@ class Webpage {
             // Not logged in
             if (err.message.includes('waiting for selector "div[id=loginSessionInfo]" failed')){
                 console.log("User not logged in to filterblade.xyz");
+                browser.close()
                 this.doLogin()
             }
             // Don't know which error happened, just log and move on
             else{
                 console.log(err)
+                browser.close()
             }
         }
     }
     
-    static doLogin(){ // Start a new session with a visible browser that the user can log in and save the data
-        console.log("login method not implemented yet");
+    static async doLogin(){ // Start a new session with a visible browser that the user can log in and save the data
+        const browser = await puppeteer.launch({
+            headless: false,
+            userDataDir: './user_data'
+        });
+        const page = await browser.newPage()
+        await page.goto(filterblade)
     }
 }
 
