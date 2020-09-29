@@ -5,7 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . PoETools --platform=win32 --arch=x64 --ignore=/user_data --ignore=/.gitignore --prune"
   },
   "author": "Mateus Roscoe",
   "license": "ISC",

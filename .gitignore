@@ -120,3 +120,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# packaged version
+/PoETools-win32-x64
