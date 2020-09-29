@@ -11,10 +11,16 @@ class Webpage {
         main.sendUpdate('updateStatus Update in process now')
         // Launching browser and navigatin to site.
         const browser = await puppeteer.launch({
-            headless: false,
-            userDataDir: './user_data'
+            headless: false, // does not work in headless mode as I need to check for visual elements to be displayed to navigate the page.
+            userDataDir: './user_data',
+            args: [
+                    // These 3 args make so chrome doesn't throttle the tab if it's in the background, it's not working all the time, it's an issue with puppeteer/chromium
+                    '--disable-background-timer-throttling', 
+                    '--disable-backgrounding-occluded-windows',
+                    '--disable-renderer-backgrounding'
+            ]
         });
-        const page = await browser.newPage()
+        const page = (await browser.pages())[0];
         await page.goto(filterblade)
         try {
             // Waiting for page to load properly
