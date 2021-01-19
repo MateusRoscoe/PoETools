@@ -1,10 +1,10 @@
 
 const puppeteer = require('puppeteer');
-const main = require ('./main.js')
+const main = require('./main.js')
 const filterblade = 'https://www.filterblade.xyz'
 class Webpage {
     static async updateFilter(slotFB, slotPoE) {
-        
+
         var saveSlotFB = slotFB - 1 // valid numbers are 0~14
         var saveSlotPoE = slotPoE - 1 // valid numbers are 0~14?
         console.log(`SlotFB = ${saveSlotFB} \nSlotPoE = ${saveSlotPoE}`);
@@ -14,10 +14,10 @@ class Webpage {
             headless: false, // does not work in headless mode as I need to check for visual elements to be displayed to navigate the page.
             userDataDir: './user_data',
             args: [
-                    // These 3 args make so chrome doesn't throttle the tab if it's in the background, it's not working all the time, it's an issue with puppeteer/chromium
-                    '--disable-background-timer-throttling', 
-                    '--disable-backgrounding-occluded-windows',
-                    '--disable-renderer-backgrounding'
+                // These 3 args make so chrome doesn't throttle the tab if it's in the background, it's not working all the time, it's an issue with puppeteer/chromium
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding'
             ]
         });
         const page = (await browser.pages())[0];
@@ -35,7 +35,7 @@ class Webpage {
             await page.click('button[id="SelectionButton5"]')
             // Clicking to load desired filter.
             let nextButtonId = 'LoadProfileSaveState' + saveSlotFB
-            await page.waitForSelector('button[id="'+nextButtonId+'"]')
+            await page.waitForSelector('button[id="' + nextButtonId + '"]')
             await page.click('button[id="' + nextButtonId + '"]')
             // Waiting for filter to load and possibly update
             await page.waitForSelector('div.smallMessageBox')
@@ -44,8 +44,8 @@ class Webpage {
             await page.click('a[href = "#"]')
             await page.click('button[id="uploadFilterToPoeButton"]')
             await page.waitForSelector('button[id="UpdatePoeFilterContent' + saveSlotPoE + '"]')
-            await page.click('button[id="UpdatePoeFilterContent'+ saveSlotPoE +'"]')
-            
+            await page.click('button[id="UpdatePoeFilterContent' + saveSlotPoE + '"]')
+
             // toDO check if it's possible that the update fails and an error message is displayed as a label
             // Wait for success message + 2s then close the browser
             await page.waitForSelector('div.smallMessageBox')
@@ -53,7 +53,7 @@ class Webpage {
 
             // Updating date of change
             let date = new Date()
-            const options = { month: 'short', day: 'numeric' , hour:'numeric', minute:'numeric'}
+            const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }
             let now = date.toLocaleDateString('en-US', options)
             main.sendUpdate('lastUpdated ' + now)
             main.sendUpdate('updateStatus Update completed successfully')
@@ -62,25 +62,27 @@ class Webpage {
             await new Promise(r => setTimeout(r, 5000))
             browser.close()
         }
-        // Handling possible errors
         catch (err) {
-            // Not logged in
-            if (err.message.includes('waiting for selector "div[id=loginSessionInfo]" failed')){
-                console.log("User not logged in to filterblade.xyz");
-                browser.close()
-                main.sendUpdate('updateStatus Update failed user not logged in')
-                this.doLogin()
-            }
-            // Don't know which error happened, just log and move on
-            else{
-                console.log(err)
-                main.sendUpdate('updateStatus Update failed for unkown reason, make sure filterblade.xyz is up and try again')
-                browser.close()
-            }
+            browser.close()
+            this.handleLoginError(err)
         }
     }
-    
-    static async doLogin(){ // Start a new session with a visible browser that the user can log in and save the data
+
+    static async handleLoginError(error) {
+        // Checking if not logged in error happened
+        if (error.message.includes('waiting for selector "div[id=loginSessionInfo]" failed')) {
+            console.log("User not logged in to filterblade.xyz");
+            main.sendUpdate('updateStatus Update failed user not logged in')
+            this.doLogin()
+        }
+        // Don't know which error happened, just log and move on
+        else {
+            console.log(error)
+            main.sendUpdate('updateStatus Update failed for unkown reason, make sure filterblade.xyz is up and try again')
+        }
+    }
+
+    static async doLogin() { // Start a new session with a visible browser that the user can log in and save the data
         const browser = await puppeteer.launch({
             headless: false,
             userDataDir: './user_data'

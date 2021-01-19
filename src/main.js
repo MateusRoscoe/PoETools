@@ -1,5 +1,5 @@
 const webpage = require('./webpage.js')
-const {app, BrowserWindow, Menu, ipcMain} = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path');
 const url = require('url');
 
@@ -25,9 +25,11 @@ function createWindow() {
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
     })
-    
+
+    /*
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
+    */
 }
 
 // This method will be called when Electron has finished
@@ -48,7 +50,7 @@ const mainMenuTemplate = [
             },
             {
                 label: 'Login',
-                click(){
+                click() {
                     webpage.doLogin()
                 }
             },
@@ -83,13 +85,13 @@ ipcMain.on('asynchronous-message', (event, message) => {
     let command = message.substr(0, message.indexOf(' ')) // command to execute
     let param = message.substr(message.indexOf(' ') + 1) // parameters of the command
     console.log(`command = ${command} param = ${param}`);
-    
+
     // check which command it is and execute it's function
-    if (command == 'updateFilter'){
+    if (command == 'updateFilter') {
         param = param.split(' ')
         webpage.updateFilter(param[0], param[1])
     }
-    else{
+    else {
         console.log('Command not found');
     }
 });

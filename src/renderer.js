@@ -6,13 +6,13 @@ var btnUpdate = document.getElementById('btnUpdateFilter')
 var lastUpdated = document.getElementById('lastUpdated')
 var updateStatus = document.getElementById('updateStatus')
 
-btnUpdate.addEventListener('click', function(){
+btnUpdate.addEventListener('click', function () {
     let slot1 = saveSlotFB.value
     let slot2 = saveSlotPoE.value
-    if (slot1 > 0 && slot1 < 16 && slot2 > 0 && slot2 <16){
-        ipcRenderer.send('asynchronous-message',`updateFilter ${saveSlotFB.value} ${saveSlotPoE.value}`)
+    if (slot1 > 0 && slot1 < 16 && slot2 > 0 && slot2 < 16) {
+        ipcRenderer.send('asynchronous-message', `updateFilter ${saveSlotFB.value} ${saveSlotPoE.value}`)
     }
-    else{
+    else {
         console.log('Numbers for save slots are invalid.')
     }
 })
@@ -32,14 +32,14 @@ ipcRenderer.on('update', (event, message) => {
     let param = message.substr(message.indexOf(' ') + 1) // parameters of the command
     console.log(`command = ${command} param = ${param}`);
 
-    if(command == 'lastUpdated'){
-        console.log('Changing lastUpdated date to ' +param);
-        lastUpdated.innerHTML = 'Last updated on : '+ param
+    if (command == 'lastUpdated') {
+        console.log('Changing lastUpdated date to ' + param);
+        lastUpdated.innerHTML = 'Last updated on : ' + param
     }
-    else if(command == 'updateStatus'){
+    else if (command == 'updateStatus') {
         updateStatus.innerHTML = param
     }
-    else{
+    else {
         console.log('Command not found on renderer.js');
     }
 });
