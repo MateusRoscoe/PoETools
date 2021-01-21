@@ -1,13 +1,17 @@
+
+const fs = require('fs')
 const webpage = require('./webpage.js')
+const config = require('../data/config.json')
+const checkVersion = require('./checkversion.js')
 const { app, BrowserWindow, Menu, ipcMain } = require('electron')
-const path = require('path');
-const url = require('url');
+const path = require('path')
+const url = require('url')
 
 var mainWindow
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        // show: false,
+        show: false,
         width: 800,
         height: 600,
         webPreferences: {
@@ -26,18 +30,20 @@ function createWindow() {
         mainWindow.show();
     })
 
+    mainWindow.webContents.once('dom-ready', () => {
+        loadFile()
+    });
     /*
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
     */
 }
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
 
-// toDO
+
 const mainMenuTemplate = [
     {
         label: 'Menu',
@@ -52,6 +58,12 @@ const mainMenuTemplate = [
                 label: 'Login',
                 click() {
                     webpage.doLogin()
+                }
+            },
+            {
+                label: "Check Latest Version",
+                click() {
+                    checkVersion.checkFilter()
                 }
             },
             {
@@ -82,14 +94,20 @@ app.on('activate', () => {
 ipcMain.on('asynchronous-message', (event, message) => {
     // Parse message into command and parameter
     console.log('Received asynchronous message with ' + message)
-    let command = message.substr(0, message.indexOf(' ')) // command to execute
-    let param = message.substr(message.indexOf(' ') + 1) // parameters of the command
-    console.log(`command = ${command} param = ${param}`);
+    let command = message[0]
+    console.log('command = ' + command);
 
     // check which command it is and execute it's function
     if (command == 'updateFilter') {
-        param = param.split(' ')
-        webpage.updateFilter(param[0], param[1])
+        console.log('updateFilter slots ' + message[1] + ' and ' + message[2]);
+        webpage.updateFilter(message[1], message[2])
+    }
+    else if (command == 'saveJson') {
+        message.shift()
+        saveJson(message)
+    }
+    else if (command == 'loadFile') {
+        loadFile()
     }
     else {
         console.log('Command not found');
@@ -100,8 +118,24 @@ function sendUpdate(value) {
     mainWindow.webContents.send('update', value)
 }
 
-function updateDefault(value) {
-    mainWindow.webContents.send('updateDefault', value)
+function loadFile() {
+    let value = []
+    value.push(config.lastUpdatedOn)
+    value.push(config.currentVersion)
+    value.push(config.latestFilterVersion)
+    mainWindow.webContents.send('loadFile', value)
 }
+function saveJson(value) {
+    console.log(value)
 
+    config.lastUpdatedOn = value[0]
+    config.currentVersion = value[1]
+    config.latestFilterVersion = value[2]
+
+    fs.writeFile(path.join(__dirname, '..', '/data/config.json'), JSON.stringify(config, null, 2), function writeJSON(err) {
+        if (err) return console.log(err);
+        console.log(JSON.stringify(config));
+        console.log('writing to ' + path.join(__dirname, '..', '/data/config.json'));
+    });
+}
 exports.sendUpdate = sendUpdate

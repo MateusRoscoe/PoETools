@@ -4,17 +4,10 @@ Automatically load and update your filterblade.xyz filters and then sync it with
 
 ### Installing
 
-1. Go to releases and download the latest release.
-2. Extract and run the PoETools.exe
+~~1. Go to releases and download the latest release.~~
+~~2. Extract and run the PoETools.exe~~
 
-Or you can clone this repo and install using 
-```
-npm i
-```
-And run using
-```
-npm start
-```
+This app is not ready for public release and although it's not an obligation NeverSink said he "isn't a fan" of the idea of someone using a crawler to get those updates.
 ## Built With
 
 * [Node.js](https://nodejs.org/en/)
