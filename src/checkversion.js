@@ -13,13 +13,13 @@ class CheckVersion {
     static compareVersion(latest) {
         main.sendUpdate(['latestFilter', latest])
         let current = config.currentVersion
-        console.log(current);
-        console.log(latest);
+        console.log(current)
+        console.log(latest)
         if (parseInt(current.split('.').join("")) < parseInt(latest.split('.').join(""))) {
-            console.log('Your current version is outdated, please update the filter.');
+            console.log('Your current version is outdated, please update the filter.')
         }
         else {
-            console.log('Up to date.');
+            console.log('Up to date.')
         }
     }
 }

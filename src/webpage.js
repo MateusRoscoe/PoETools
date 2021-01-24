@@ -7,8 +7,8 @@ class Webpage {
 
         var saveSlotFB = slotFB - 1 // valid numbers are 0~14
         var saveSlotPoE = slotPoE - 1 // valid numbers are 0~14?
-        console.log(`SlotFB = ${saveSlotFB} \nSlotPoE = ${saveSlotPoE}`);
-        main.sendUpdate(['updateStatus', 'Update in process now'])
+        console.log(`SlotFB = ${saveSlotFB} \nSlotPoE = ${saveSlotPoE}`)
+        main.sendUpdate(['updateStatus', 'Update in progress now'])
         // Launching browser and navigatin to site.
         const browser = await puppeteer.launch({
             product: 'chrome',
@@ -22,8 +22,8 @@ class Webpage {
                 '--disable-renderer-backgrounding',
                 '--start-maximised'
             ]
-        });
-        const page = (await browser.pages())[0];
+        })
+        const page = (await browser.pages())[0]
         await page.goto(filterblade)
         try {
             // Waiting for page to load properly
@@ -88,7 +88,7 @@ class Webpage {
     static async handleLoginError(error) {
         // Checking if not logged in error happened
         if (error.message.includes('waiting for selector "div[id=loginSessionInfo]" failed')) {
-            console.log("User not logged in to filterblade.xyz");
+            console.log("User not logged in to filterblade.xyz")
             main.sendUpdate(['updateStatus', 'Update failed user not logged in'])
             this.doLogin()
         }
@@ -103,10 +103,10 @@ class Webpage {
         const browser = await puppeteer.launch({
             headless: false,
             userDataDir: './user_data'
-        });
+        })
         const page = await browser.newPage()
         await page.goto(filterblade)
     }
 }
 
-module.exports = Webpage;
+module.exports = Webpage

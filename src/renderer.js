@@ -28,13 +28,10 @@ btnUpdate.addEventListener('click', function () {
 
 ipcRenderer.on('asynchronous-reply', (event, arg) => {
     console.log("Received reply with " + arg) // prints reply
-});
+})
 
-// command contains what to update
-// param contains what to change to
-
-
-
+// message[0] contains what to update
+// message[X+1] contains what to change to
 
 ipcRenderer.on('update', (event, message) => {
     // Parse message into command and parameter
@@ -64,9 +61,9 @@ ipcRenderer.on('update', (event, message) => {
     else {
         console.log('Command not found on renderer.js')
     }
-});
+})
 ipcRenderer.on('loadFile', (event, message) => {
-    console.log('inside loadFile on renderer.js');
+    console.log('Loading data from config.json')
     lastUp = message[0]
     currentVer = message[1]
     latestFV = message[2]
@@ -74,7 +71,7 @@ ipcRenderer.on('loadFile', (event, message) => {
     lastUpdated.innerHTML = 'Last updated on : ' + lastUp
     currentVersion.innerHTML = 'Current filter version is : ' + currentVer
     latestFilterVersion.innerHTML = 'Latest filter version on filterblade.xyz is : ' + latestFV
-});
+})
 
 function saveJson() {
     ipcRenderer.send('asynchronous-message', ['saveJson', lastUp, currentVer, latestFV])

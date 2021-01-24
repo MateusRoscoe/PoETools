@@ -24,15 +24,15 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }))
-    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-    Menu.setApplicationMenu(mainMenu);
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate)
+    Menu.setApplicationMenu(mainMenu)
     mainWindow.once('ready-to-show', () => {
-        mainWindow.show();
+        mainWindow.show()
     })
 
     mainWindow.webContents.once('dom-ready', () => {
         loadFile()
-    });
+    })
     /*
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
@@ -51,7 +51,7 @@ const mainMenuTemplate = [
             {
                 label: 'Quit',
                 click() {
-                    app.quit();
+                    app.quit()
                 }
             },
             {
@@ -63,13 +63,14 @@ const mainMenuTemplate = [
             {
                 label: "Check Latest Version",
                 click() {
+                    // TODO add some alert/warning when it finishes checking for the filter and possibly an windows alert when it finds an update.
                     checkVersion.checkFilter()
                 }
             },
             {
                 label: "Dev Tools",
                 click() {
-                    mainWindow.openDevTools();
+                    mainWindow.openDevTools()
                 }
             }
         ]
@@ -95,11 +96,11 @@ ipcMain.on('asynchronous-message', (event, message) => {
     // Parse message into command and parameter
     console.log('Received asynchronous message with ' + message)
     let command = message[0]
-    console.log('command = ' + command);
+    console.log('command = ' + command)
 
     // check which command it is and execute it's function
     if (command == 'updateFilter') {
-        console.log('updateFilter slots ' + message[1] + ' and ' + message[2]);
+        console.log('updateFilter slots ' + message[1] + ' and ' + message[2])
         webpage.updateFilter(message[1], message[2])
     }
     else if (command == 'saveJson') {
@@ -110,9 +111,9 @@ ipcMain.on('asynchronous-message', (event, message) => {
         loadFile()
     }
     else {
-        console.log('Command not found');
+        console.log('Command not found')
     }
-});
+})
 
 function sendUpdate(value) {
     mainWindow.webContents.send('update', value)
@@ -133,9 +134,9 @@ function saveJson(value) {
     config.latestFilterVersion = value[2]
 
     fs.writeFile(path.join(__dirname, '..', '/data/config.json'), JSON.stringify(config, null, 2), function writeJSON(err) {
-        if (err) return console.log(err);
-        console.log(JSON.stringify(config));
-        console.log('writing to ' + path.join(__dirname, '..', '/data/config.json'));
-    });
+        if (err) return console.log(err)
+        console.log(JSON.stringify(config))
+        console.log('writing to ' + path.join(__dirname, '..', '/data/config.json'))
+    })
 }
 exports.sendUpdate = sendUpdate
