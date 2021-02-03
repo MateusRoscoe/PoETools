@@ -123,3 +123,5 @@ dist
 
 # packaged version
 /PoETools-win32-x64
+
+data/config.json

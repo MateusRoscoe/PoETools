@@ -16,9 +16,11 @@ class CheckVersion {
         console.log(current)
         console.log(latest)
         if (parseInt(current.split('.').join("")) < parseInt(latest.split('.').join(""))) {
+            main.sendUpdate(['checkVersion', 'outdated, please update.'])
             console.log('Your current version is outdated, please update the filter.')
         }
         else {
+            main.sendUpdate(['checkVersion', 'up to date.'])
             console.log('Up to date.')
         }
     }
