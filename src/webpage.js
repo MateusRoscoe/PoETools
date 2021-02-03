@@ -38,7 +38,6 @@ class Webpage {
 
             // Getting current filter version.
             var element = await page.$eval('#FilterInfo_Description', el => el.textContent)
-            console.log(element)
             let start = element.indexOf("version")
             let currentVersion = element.slice(start + 8, start + 16).split(" ")[0]
             currentVersion = currentVersion.replace(",", "")
@@ -50,22 +49,37 @@ class Webpage {
 
             // Clicking to load desired filter.
             let nextButtonId = 'LoadProfileSaveState' + saveSlotFB
-            await page.waitForSelector('button[id="' + nextButtonId + '"]')
+            console.log(nextButtonId);
+            await page.waitForSelector('button[id="' + nextButtonId + '"]', {
+                visible: true,
+                timeout: 5000,
+            })
             await page.click('button[id="' + nextButtonId + '"]')
 
             // Waiting for filter to load and possibly update
-            await page.waitForSelector('div.smallMessageBox')
+            await page.waitForSelector('div[class=smallMessageBox]', {
+                visible: true,
+                timeout: 5000,
+            })
             console.log('Save state successfully loaded.')
 
-            // Syncing with PoE
-            await page.click('a[href = "#"]')
+            // Getting to sync with PoE interface
+            await page.click('button[id="SelectionButton6"')
+            await page.click('button[id="downloadScreen_tabButton_0"')
             await page.click('button[id="uploadFilterToPoeButton"]')
-            await page.waitForSelector('button[id="UpdatePoeFilterContent' + saveSlotPoE + '"]')
+
+            // Syncing with PoE
+            await page.waitForSelector('button[id="UpdatePoeFilterContent' + saveSlotPoE + '"]', {
+                visible: true,
+                timeout: 5000,
+            })
             await page.click('button[id="UpdatePoeFilterContent' + saveSlotPoE + '"]')
 
-            // toDO check if it's possible that the update fails and an error message is displayed as a label
-            // Wait for success message + 2s then close the browser
-            await page.waitForSelector('div.smallMessageBox')
+            // Wait for success message
+            await page.waitForSelector('div.smallMessageBox', {
+                visible: true,
+                timeout: 5000,
+            })
             console.log("Job finished, filter updated.")
 
             // Updating date of change
@@ -74,10 +88,10 @@ class Webpage {
             let now = date.toLocaleDateString('en-US', options)
             main.sendUpdate(['lastUpdated', now, currentVersion])
             main.sendUpdate(['updateStatus', 'Update completed successfully'])
-            main.sendUpdate(['createAlert'], 'Filter succesfully updated.')
+            main.sendUpdate(['createAlert', 'Filter succesfully updated.'])
 
             // closing browser
-            await new Promise(r => setTimeout(r, 5000)) // let the user visually see that it has been updated.
+            await new Promise(r => setTimeout(r, 10000)) // TODO remove this when deploying app and confidence on failuer checking is high.
             browser.close()
         }
         catch (err) {

@@ -60,7 +60,7 @@ ipcRenderer.on('update', (event, message) => {
     }
     else if (command == 'createAlert') {
         console.log('Alerting with ' + message[1])
-        window.alert(message[1])
+        window.alert(" " + message[1])
     }
     else {
         console.log('Command not found on renderer.js')
