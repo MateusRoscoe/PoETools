@@ -11,9 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "puppeteer": "^5.2.1"
+    "puppeteer": "^7.0.0",
+    "electron": "^11.2.2"
   },
-  "devDependencies": {
-    "electron": "^9.1.1"
-  }
+  "devDependencies": {}
 }
