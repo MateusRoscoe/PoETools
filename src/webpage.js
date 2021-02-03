@@ -74,6 +74,7 @@ class Webpage {
             let now = date.toLocaleDateString('en-US', options)
             main.sendUpdate(['lastUpdated', now, currentVersion])
             main.sendUpdate(['updateStatus', 'Update completed successfully'])
+            main.sendUpdate(['createAlert'], 'Filter succesfully updated.')
 
             // closing browser
             await new Promise(r => setTimeout(r, 5000)) // let the user visually see that it has been updated.
